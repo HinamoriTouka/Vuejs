@@ -1,0 +1,202 @@
+# 练习1————小羊记事本
+
+## 效果演示：
+
+![效果演示](https://user-images.githubusercontent.com/110605402/182848519-2d383dcf-154e-420e-a9df-b1b79150feb9.gif)
+
+## 代码
+
+### HTML部分：
+
+```
+    <div id="todo-list">
+        <header>
+            <h1>小羊记事本</h1>
+        </header>
+
+        <div class="main">
+            <input type="text" placeholder="请输入任务" v-model="todo" @keypress.enter="newTodo">
+            <ol>
+                <li v-for="(item,index) in todos">
+                    <span class="index">{{ index+1 }}.</span>
+                    {{ item }}
+                    <button @click="delTodo(index)">✕</button>
+                </li>
+            </ol>
+        </div>
+
+        <footer>
+            <span class="amounts" v-if="todos.length!=0">
+                <strong>{{ todos.length }}</strong> items left
+            </span>
+            <button class="clear-all" @click="clearAll">
+                Clear
+            </button>
+        </footer>
+    </div>
+```
+
+### JS部分：
+
+```
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <script>
+        const todoList = {
+            data() {
+                return {
+                    todo: "",
+                    todos: ["吃饭", "睡觉", "打豆豆"],
+                }
+            },
+
+            methods: {
+                newTodo() {
+                    if (this.todo != "") {
+                        this.todos.push(this.todo);
+                        this.todo = "";
+                    }
+                },
+                delTodo(index) {
+                    this.todos.splice(index, 1)
+                },
+                clearAll() {
+                    if (window.confirm("确定要清空吗？")) {
+                        this.todos.splice(0, this.todos.length)
+                    }
+                }
+            }
+        };
+
+        Vue.createApp(todoList).mount('#todo-list');
+    </script>
+```
+
+### CSS部分：
+
+```
+        body {
+            background-color: #B9AB91;
+            color: #575555;
+        }
+
+
+        #todo-list {
+            position: relative;
+            width: 500px;
+            height: 650px;
+            margin: 50px auto 0;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #5E4843;
+            box-shadow: 0 0 5px #5E4843;
+            text-align: center;
+        }
+
+        header {
+            height: 130px;
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 300;
+            font-size: 50px;
+            line-height: 130px;
+            color: #5E4843;
+        }
+
+        input {
+            height: 60px;
+            width: 400px;
+            box-sizing: border-box;
+            border: 1px solid #ededed;
+            font-size: 20px;
+            text-indent: 10px;
+            color: #575555;
+        }
+
+        input:focus {
+            outline: 0;
+            box-shadow: 0 0 3px grey;
+        }
+
+        input::-webkit-input-placeholder {
+            font-style: italic;
+            color: lightgrey;
+            font-size: 20px;
+            text-indent: 10px;
+        }
+
+        ol {
+            height: 400px;
+            width: 400px;
+            box-sizing: border-box;
+            margin: 0 auto;
+            padding: 0;
+            overflow: auto;
+        }
+
+        li {
+            position: relative;
+            height: 50px;
+            border: 1px solid #ededed;
+            box-sizing: border-box;
+            margin-top: -1px;
+            list-style-type: none;
+            text-align: left;
+            font-size: 20px;
+            line-height: 50px;
+            text-indent: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        li button {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border: 0px;
+            background-color: #fff;
+            font-size: 18px;
+            color: #575555;
+        }
+
+        li:hover button {
+            display: inline-block;
+        }
+
+        li .index {
+            margin-right: 20px;
+        }
+
+        footer {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            box-sizing: border-box;
+            bottom: 0px;
+            line-height: 50px;
+        }
+
+        .amounts {
+            position: absolute;
+            left: 50px;
+        }
+
+        .clear-all {
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            width: 60px;
+            height: 30px;
+            border: 0px;
+            padding: 0px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #575555;
+        }
+```
