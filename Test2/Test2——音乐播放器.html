@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小羊播放器</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./iconfonts/iconfont.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部搜索栏区域 -->
+        <header>
+            <h1>小羊播放器</h1>
+            <input type="text" v-model="keyWords" @keypress.enter="getMusic">
+            <i @click="getMusic" class="iconfont">&#xe651;</i>
+        </header>
+
+        <!-- 左侧唱片区域 -->
+        <div class="record">
+            <img :src="coverUrl" :class="isPlaying?'cover-playing':'cover'">
+            <img src="./disc.png" :class="isPlaying?'disc-playing':'disc'">
+            <img src="./player_bar.png" :class="isPlaying?'player-bar-playing':'player-bar'">
+        </div>
+
+        <!-- 搜索结果页面 -->
+        <div class="music-list" v-show="seen1">
+            <span class="w1">&ensp;</span>
+            <span class="w2">音乐标题</span>
+            <span class="w3">歌手</span>
+            <span class="w4">专辑</span>
+            <span class="w6">时长</span>
+            <ol>
+                <li v-for="(item,index) in musicList" @dblclick="playMusic(item.id)">
+                    <span class="w1">{{ index+1 }}</span>
+                    <span class="w2">{{ item.name }}
+                        <i @click="playMusic(item.id)" class="iconfont">&#xe66d;</i>
+                        <i v-if="item.mvid!=0" @click="playMV(item.mvid)" class="iconfont">&#xe622;</i>
+                    </span>
+                    <span class="w3">{{ item.artists[0].name }}</span>
+                    <span class="w4">{{ item.album.name }}</span>
+                    <span class="w5">{{ Math.floor(item.duration/60000) }}'{{ Math.floor(item.duration/1000%60)
+                        }}"
+                    </span>
+                </li>
+            </ol>
+        </div>
+
+        <!-- 评论列表页面 -->
+        <div class="comment-list" v-show="seen2">
+            <h2 @click="returnToMusicList"><i class="iconfont">&#xe601;</i>返回搜索结果列表</h2>
+            <ul>
+                <li v-for="item in commentList">
+                    <div class="avatar-container">
+                        <img :src="item.user.avatarUrl" alt="头像">
+                    </div>
+                    <div class="comment-container">
+                        <strong>{{ item.user.nickname }}：</strong>
+                        <span>{{ item.content }}</span><br />
+                        <span id="comment-time">{{ new Date(item.time).toLocaleString() }}</span>
+                        <span id="likes">
+                            <i class="iconfont">&#xec7f;</i>{{ item.likedCount }}
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 音频＆视频播放控件 -->
+        <audio :src="musicUrl" @play="play" @pause="pause" ref="audio" controls autoplay loop></audio>
+
+        <div class="mask" v-show="isShow" @click="hide">
+            <video :src="mvUrl" controls autoplay></video>
+        </div>
+    </div>
+
+    <!-- 使用 CDN 方式导入 axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- 引入本地Vue.js文件 -->
+    <script src="./vue.global.js"></script>
+
+    <script>
+        // 创建＆挂载Vue实例
+        const app = {
+            data() {
+                return {
+                    keyWords: "",
+                    musicList: [],
+                    musicUrl: "",
+                    coverUrl: "",
+                    mvUrl: "",
+                    commentList: [],
+                    isPlaying: false,
+                    isShow: false,
+                    seen1: true,
+                    seen2: false,
+                }
+            },
+
+            methods: {
+                getMusic() {
+                    let that = this;
+
+                    // 获取搜索到的歌曲列表
+                    axios({
+                        url: 'https://autumnfish.cn/search',
+                        method: 'get',
+                        params: {
+                            keywords: this.keyWords
+                        }
+                    }).then(function (response) {
+                        that.musicList = response.data.result.songs;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+
+                playMusic(musicId) {
+                    this.seen1 = !this.seen1;
+                    this.seen2 = !this.seen2;
+                    let that = this;
+
+                    //获取歌曲音频URL
+                    axios({
+                        url: 'https://autumnfish.cn/song/url',
+                        method: 'get',
+                        params: {
+                            id: musicId
+                        }
+                    }).then(function (response) {
+                        that.musicUrl = response.data.data[0].url;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+
+                    //获取封面图片URL
+                    axios({
+                        url: 'https://autumnfish.cn/song/detail',
+                        method: 'get',
+                        params: {
+                            ids: musicId
+                        }
+                    }).then(function (response) {
+                        that.coverUrl = response.data.songs[0].al.picUrl;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+
+                    //获取评论列表
+                    axios({
+                        url: 'https://autumnfish.cn/comment/hot',
+                        method: 'get',
+                        params: {
+                            type: 0,
+                            id: musicId
+                        }
+                    }).then(function (response) {
+                        that.commentList = response.data.hotComments;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+
+                playMV(mvId) {
+                    let that = this;
+
+                    // 播放MV前暂停当前正在播放的音乐
+                    this.$refs.audio.pause();
+
+                    // 获取歌曲MV的URL
+                    axios({
+                        url: 'https://autumnfish.cn/mv/url',
+                        method: 'get',
+                        params: {
+                            id: mvId
+                        }
+                    }).then(function (response) {
+                        that.mvUrl = response.data.data.url;
+                        that.isShow = true;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+
+                // 设定为播放音乐时自动跳转到评论页面，因此增加一个按钮返回搜索列表页
+                returnToMusicList() {
+                    this.seen2 = !this.seen2;
+                    this.seen1 = !this.seen1;
+                },
+
+                // 根据音频播放与否控制唱片是否旋转
+                play() {
+                    this.isPlaying = true;
+                },
+
+                pause() {
+                    this.isPlaying = false;
+                },
+
+                // 点击mv以外的区域时，隐藏mv页面并停止播放，防止继续在后台发出声音
+                hide() {
+                    this.isShow = false;
+                    this.mvUrl = "";
+                }
+            }
+        };
+
+        Vue.createApp(app).mount("#app");    
+    </script>
+</body>
+
+</html>

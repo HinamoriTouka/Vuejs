@@ -1,0 +1,334 @@
+/* 引入iconfont阿里巴巴矢量图标库的图标字体 */
+@font-face {
+    font-family: 'iconfont';
+    src: url('iconfont.eot');
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'),
+        url('./iconfonts/iconfont.woff') format('woff'),
+        url('./iconfonts/iconfont.ttf') format('truetype'),
+        url('iconfont.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 14px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 页面背景及播放器外观部分 */
+body {
+    background-color: #B9AB91;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+#app {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    margin: 50px auto 0;
+    background-image: linear-gradient(#6F6759, #B9AB91);
+    border-radius: 5px;
+}
+
+#app>header {
+    position: sticky;
+    width: 100%;
+    height: 60px;
+    background-color: #3D3A33;
+}
+
+#app>header h1 {
+    float: left;
+    font-weight: normal;
+    margin: 0 20px;
+    font-size: 20px;
+    line-height: 60px;
+    color: #DED0B9;
+}
+
+#app>header input {
+    float: right;
+    width: 300px;
+    height: 30px;
+    margin: 12px 20px;
+    border: 0;
+    border-radius: 18px;
+    background-color: #DED0B9;
+    text-indent: 1em;
+}
+
+#app>header input:focus {
+    outline: none;
+}
+
+#app>header i {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 16px;
+}
+
+
+/* 左侧唱片部分 */
+.record {
+    position: relative;
+    float: left;
+    width: 250px;
+    height: 486px;
+}
+
+/* 旋转效果 */
+@keyframes autorotate {
+    0% {
+        transform: rotateZ(0);
+    }
+
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+.player-bar {
+    position: absolute;
+    left: 100px;
+    top: 50px;
+    transform: rotate(-25deg);
+    transform-origin: 12px 12px;
+    transition: 0.5s;
+}
+
+.player-bar-playing {
+    position: absolute;
+    left: 100px;
+    top: 50px;
+    transform: rotate(0);
+    transform-origin: 12px 12px;
+    transition: 0.5s;
+}
+
+.disc {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    left: 50%;
+    top: 50%;
+    margin: -110px 0 0 -110px;
+    animation: autorotate 20s linear 0s infinite normal forwards paused;
+}
+
+.disc-playing {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    left: 50%;
+    top: 50%;
+    margin: -110px 0 0 -110px;
+    animation: autorotate 20s linear 0s infinite normal forwards running;
+}
+
+.cover {
+    position: absolute;
+    width: 126px;
+    height: 126px;
+    left: 50%;
+    top: 50%;
+    margin: -63px 0 0 -63px;
+    animation: autorotate 20s linear 0s infinite normal forwards paused;
+}
+
+.cover-playing {
+    position: absolute;
+    width: 126px;
+    height: 126px;
+    left: 50%;
+    top: 50%;
+    margin: -63px 0 0 -63px;
+    animation: autorotate 20s linear 0s infinite normal forwards running;
+}
+
+/*页面滚动条样式*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(61, 58, 51, 1);
+    border-radius: 10px;
+}
+
+/* 歌曲搜索结果部分 */
+.music-list {
+    position: relative;
+    float: left;
+    width: 550px;
+    height: 486px;
+}
+
+.music-list>span {
+    height: 24px;
+    padding: 5px 0;
+    background-color: #635D50;
+    font-weight: bold;
+    line-height: 24px;
+}
+
+.music-list ol {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    height: 452px;
+    overflow: auto;
+}
+
+.music-list ol li {
+    display: flex;
+    padding: 5px 0;
+    font-size: 14px;
+    align-items: flex-start;
+}
+
+.music-list ol li:nth-child(odd) {
+    background-color: rgba(169, 157, 134, 0.5);
+}
+
+.music-list ol li:nth-child(even) {
+    background-color: rgba(128, 118, 102, 0.5);
+}
+
+.music-list ol li:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.music-list ol li i {
+    margin-right: 5px;
+    color: #5C3B22;
+}
+
+.w1 {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+
+}
+
+.w2 {
+    display: inline-block;
+    width: 170px;
+}
+
+.w3 {
+    display: inline-block;
+    width: 100px;
+}
+
+.w4 {
+    display: inline-block;
+    width: 165px;
+}
+
+.w5 {
+    display: inline-block;
+    width: 60px;
+}
+
+.w6 {
+    display: inline-block;
+    width: 75px;
+}
+
+/* 评论列表部分 */
+.comment-list {
+    position: relative;
+    float: left;
+    width: 550px;
+    height: 486px;
+    overflow: auto;
+}
+
+.comment-list h2 {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 14px;
+    color: #DED0B9;
+}
+
+.comment-list ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.comment-list ul li {
+    position: relative;
+    border-bottom: 1px solid rgba(184, 171, 146, 0.3);
+    font-size: 14px;
+}
+
+.avatar-container {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+}
+
+.comment-list ul li img {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 10px 0;
+}
+
+.comment-container {
+    display: inline-block;
+    width: 460px;
+    padding: 10px 10px 20px;
+    vertical-align: top;
+}
+
+.comment-list ul li strong {
+    font-weight: normal;
+    color: #5C3B22;
+}
+
+#comment-time {
+    display: inline-block;
+    margin-top: 10px;
+    opacity: 0.6;
+}
+
+#likes {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+/* 音频播放控件部分 */
+audio {
+    position: relative;
+    width: 100%;
+    background-color: #DED0B9;
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #DED0B9;
+}
+
+/* MV播放层部分 */
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+video {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    height: 540px;
+    transform: translateX(-50%);
+}
