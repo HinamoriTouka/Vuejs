@@ -6,7 +6,8 @@
 ![搜索音乐＆查看评论](https://user-images.githubusercontent.com/110605402/183500087-08f2e848-0752-4584-8cf2-9e56df3fcafb.gif)
 
 ### 2、播放MV
-![播放MV](https://user-images.githubusercontent.com/110605402/183500705-cb65d360-6874-46b4-b7af-9ea13ed91695.gif)
+![播放MV](https://user-images.githubusercontent.com/110605402/183502800-3ae90982-b084-4288-80de-54ce546b3181.gif)
+
 
 ## 代码：
 
