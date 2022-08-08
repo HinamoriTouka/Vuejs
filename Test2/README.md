@@ -3,7 +3,8 @@
 ## 效果演示：
 
 ### 1、搜索音乐＆查看评论
-![搜索音乐＆查看评论](https://user-images.githubusercontent.com/110605402/183500087-08f2e848-0752-4584-8cf2-9e56df3fcafb.gif)
+![搜索音乐＆查看评论](https://user-images.githubusercontent.com/110605402/183507821-295d91ed-9f8a-414e-b9fc-a3c3fcccd524.gif)
+
 
 ### 2、播放MV
 ![播放MV](https://user-images.githubusercontent.com/110605402/183502800-3ae90982-b084-4288-80de-54ce546b3181.gif)
